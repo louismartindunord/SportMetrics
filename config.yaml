@@ -1,0 +1,16 @@
+credentials:
+  usernames:
+    louismn:
+      email: l.martindunord@gmail.com
+      name: Louis Martin du Nord
+      password: hashed_passwords
+ 
+cookie:
+  expiry_days: 30
+  key: random_signature_key 
+  name: random_cookie_name
+
+pre-authorized:
+  emails: l.martindunord@gmail.com
+
+
