@@ -12,3 +12,4 @@ username, user_id = session_state_initialisation()
 
 if st.session_state["username"]:
     date_options = option_menu(menu_title="", options=["Semaine", "Mois", "Années"])
+    
