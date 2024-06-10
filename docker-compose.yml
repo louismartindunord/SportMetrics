@@ -6,9 +6,9 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - DATABASE_URL=postgres://louis:abcd@host.docker.internal:5432/SportMetrics
-      - DATABASE=SportMetrics
+      - DATABASE_URL=postgres://${USER}:${PASSWORD}@host.docker.internal:${PORT}/${DATABASE}
+      - DATABASE=${DATABASE}
       - HOST=host.docker.internal
-      - USER=louis
-      - PASSWORD=abcd
-      - PORT=5432
+      - USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - PORT=${PORT}
