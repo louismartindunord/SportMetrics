@@ -1,26 +1,14 @@
+version: '3.8'
 
 services:
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: ${USER}
-      POSTGRES_PASSWORD: ${PASSWORD}
-      POSTGRES_DB: ${DATABASE}
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
   app:
     build: .
     ports:
       - "8501:8501"
     environment:
-      - DATABASE=${DATABASE}
-      - HOST=db  # Use the service name 'db' to connect to the PostgreSQL container
-      - USER=${USER}
-      - PASSWORD=${PASSWORD}
-      - PORT=${PORT}
-    depends_on:
-      - db
-
-volumes:
-  pgdata:
+      - DATABASE_URL=postgres://louis:abcd@host.docker.internal:5432/SportMetrics
+      - DATABASE=SportMetrics
+      - HOST=host.docker.internal
+      - USER=louis
+      - PASSWORD=abcd
+      - PORT=5432

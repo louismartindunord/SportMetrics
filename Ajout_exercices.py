@@ -15,11 +15,11 @@ from streamlit_option_menu import option_menu
 import streamlit_authenticator as stauth
 
 
+from utils.pages import show_page
+
+
 def main():
-    st.set_page_config(
-        page_title="main",
-        page_icon="👋",
-    )
+    show_page()
 
     username, user_id = session_state_initialisation()
 

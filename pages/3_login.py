@@ -2,8 +2,11 @@ import streamlit as st
 import streamlit_authenticator as stauth
 from utils.users_authentification import connexion_form, register_user, get_user_id
 from utils.session_state import session_state_initialisation
+from utils.pages import show_page
+
 
 st.set_page_config(page_title="Login", page_icon="📝")
+show_page()
 
 username, user_id = session_state_initialisation()
 
@@ -13,7 +16,6 @@ if authentication_status:
     st.session_state["username"] = username
     st.session_state["user_id"] = get_user_id(username)
     st.session_state["authenticated"] = True
-    print(f"User {username} logged in with ID {st.session_state['user_id']}")
 elif authentication_status is False:
     st.error("Le mot de passe ou le pseudo n'est pas reconnu")
 elif authentication_status is None:

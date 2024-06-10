@@ -1,0 +1,15 @@
+[[pages]]
+title = "Visualisation"
+script = "pages/2_Visualisation.py"
+
+[[pages]]
+title = "Créer Nouveau Sport"
+script = "pages/3_Créer_nouveau_sport.py"
+
+[[pages]]
+title = "Login"
+script = "pages/3_login.py"
+
+[[pages]]
+title = "Déconnexion"
+script = "pages/4_deconnexion.py"

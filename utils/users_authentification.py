@@ -104,15 +104,10 @@ def load_credentials():
     credentials = {"usernames": {}}
 
     for user in users:
-        username = str(
-            user[1]
-        )  # Assuming the second element of the tuple is the username
-        password = str(
-            user[2]
-        )  # Assuming the third element of the tuple is the password
+        username = str(user[1])
+        password = str(user[2])
         credentials["usernames"][username] = {"name": username, "password": password}
 
-    print("Loaded credentials:", credentials)  # Debug print
     return credentials
 
 
@@ -154,10 +149,8 @@ def get_user_id(username):
             cursor.execute(f.read(), (username,))
             user_id = cursor.fetchone()
             if user_id:
-                print("test", user_id)
                 return user_id
             else:
-                print("test pas de user_id")
                 return None
     except Exception as e:
         print(f"Error: {e}")
@@ -175,3 +168,7 @@ def session_state_initialisation():
     if "authenticated" not in st.session_state:
         st.session_state["authenticated"] = False
     return st.session_state["username"], st.session_state["user_id"]
+
+
+if __name__ == "__main__":
+    test()

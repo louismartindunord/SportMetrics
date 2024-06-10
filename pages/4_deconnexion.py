@@ -1,6 +1,10 @@
 import streamlit as st
 from utils.session_state import session_state_initialisation
 from utils.users_authentification import create_authenticator
+from utils.pages import show_page
+
+
+show_page()
 
 
 username, user_id = session_state_initialisation()

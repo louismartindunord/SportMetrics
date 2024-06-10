@@ -1,8 +1,10 @@
 import streamlit as st
 from utils.form import insert_add_sport_form
+from utils.pages import show_page
 
 
 st.set_page_config(page_title="3_Créer_nouveau_sport", page_icon="📝")
+show_page()
 
 if "username" not in st.session_state:
     st.session_state["username"] = None
