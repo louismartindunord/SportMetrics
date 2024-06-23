@@ -5,7 +5,7 @@ from utils.users_authentification import is_connected
 def show_page():
     add_page_title()
     all_pages = [
-        Page("ajout_exercices.py", "Accueil", "🏠"),
+        Page("main.py", "Accueil", "🏠"),
         Page("pages/2_Visualisation.py", "Vos métriques"),
         Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
         Page("pages/4_deconnexion.py", "Déconnexion"),
@@ -15,7 +15,7 @@ def show_page():
     if is_connected():
         show_pages(
             [
-                Page("ajout_exercices.py", "Accueil", "🏠"),
+                Page("main.py", "Accueil", "🏠"),
                 Page("pages/2_Visualisation.py", "Vos métriques"),
                 Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
                 Page("pages/4_deconnexion.py", "Déconnexion"),
@@ -25,7 +25,7 @@ def show_page():
     else:
         show_pages(
             [
-                Page("ajout_exercices.py", "Accueil", "🏠"),
+                Page("main.py", "Accueil", "🏠"),
                 Page("pages/3_login.py", "Connexion"),
             ]
         )

@@ -13,7 +13,7 @@ def import_all_data(user):
         connection = create_connection()
         cursor = connection.cursor()
         with open("./sql/import_all_datas_for_user.sql") as f:
-            cursor.execute(f.read, (user,))
+            cursor.execute(f.read(), (user,))
             data = cursor.fetchall()
         df_sport = pd.DataFrame(data)  # penser à definir les colonnes
         return df_sport
@@ -30,11 +30,7 @@ def import_all_data(user):
 
 
 def calculate_time_delta(date_options: str):
-        """"
-        return a approximative date depending on the date selecionned by the user
-        
-        """"
-    today = datetime.datetime.today()
+    today = datetime.datetime.today() # type: ignore
     if date_options == "Semaine":
         time_delta = today - timedelta(days=7)
     elif date_options == "mois":

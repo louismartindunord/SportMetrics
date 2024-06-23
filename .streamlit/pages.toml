@@ -1,4 +1,8 @@
 [[pages]]
+title ="Commencer une nouvelle Session"
+script = "main.py"
+
+[[pages]]
 title = "Visualisation"
 script = "pages/2_Visualisation.py"
 

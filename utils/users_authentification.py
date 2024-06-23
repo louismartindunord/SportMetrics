@@ -123,12 +123,10 @@ def create_authenticator():
 
 
 def connexion_form():
-
     authenticator = create_authenticator()
     name, authentication_status, username = authenticator.login(
         "main", "Login", fields={"username": "Username", "password": "Password"}
     )
-
     if authentication_status:
         st.session_state["username"] = username
         authenticator.logout("Logout", "main")
@@ -138,36 +136,6 @@ def connexion_form():
         st.session_state["authenticated"] = False
 
     return authentication_status, name
-
-
-def get_user_id(username):
-    connection = create_connection()
-    try:
-        file = "sql/get_user_id_from_username.sql"
-        with open(file, "r") as f:
-            cursor = connection.cursor()
-            cursor.execute(f.read(), (username,))
-            user_id = cursor.fetchone()
-            if user_id:
-                return user_id
-            else:
-                return None
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    finally:
-        if connection:
-            connection.close()
-
-
-def session_state_initialisation():
-    if "username" not in st.session_state:
-        st.session_state["username"] = None
-    if "user_id" not in st.session_state:
-        st.session_state["user_id"] = None
-    if "authenticated" not in st.session_state:
-        st.session_state["authenticated"] = False
-    return st.session_state["username"], st.session_state["user_id"]
 
 
 if __name__ == "__main__":

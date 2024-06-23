@@ -116,3 +116,26 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
             cursor.close()
         if connection:
             connection.close()
+
+
+def get_all_cross_trainning_exercice():
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+        sql = "get_all_cross_trainning_exercice.sql"
+        with open(sql, "r") as f:
+            cursor.execute(f.read())
+            cross_trainning_exercices = cursor.fetchone()
+            cross_trainning_exercices = [
+                item for sublist in cross_trainning_exercices for item in sublist
+            ]
+            return cross_trainning_exercices
+
+    except (Exception, psycopg2.Error) as error:
+        print(f"Error while fetching data: {error}")
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()

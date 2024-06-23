@@ -56,7 +56,7 @@ def main():
                     selected_muscle_area
                 )
                 selected_exercice = st.selectbox(
-                    "Selectionner l'exercice", options=exercice_for_muscle_area
+                    "Selectionner l'exercice", options=exercice_for_muscle_area # type: ignore
                 )
                 poid = st.number_input("quelle poid (kg)?", min_value=0)
                 number_repetition = st.number_input(
@@ -88,14 +88,17 @@ def main():
         with col2:
             try:
                 last_exercice = get_last_seances(horizontal_menu)
-                st.write(
-                    "Votre dernière séance de", horizontal_menu, last_exercice.head()
-                )
+                if last_exercice is not None:
+                    st.write(
+                        "Votre dernière séance de",
+                        horizontal_menu,
+                        last_exercice.head(), # type: ignore
+                    )
             except:
                 st.write("Vous n'avez de séance de", horizontal_menu, "enrengistrée")
 
     else:
-        st.warning("Veuillez vous connecter pour acceder à votre session.")
+        st.switch_page("pages/3_login.py")
 
 
 if __name__ == "__main__":
