@@ -2,7 +2,6 @@ import pandas as pd
 import psycopg2
 import os
 from dotenv import load_dotenv
-from array import *
 
 
 def create_connection():
@@ -42,7 +41,6 @@ def get_muscle_area():
     cursor = connection.cursor()
     cursor.execute(sql)
     all_muscle_area = cursor.fetchall()
-    # cette ligne permet de transformer stocké en liste de tuple en array
     all_muscle_area = [item for sublist in all_muscle_area for item in sublist]
     connection.commit()
     connection.close()
@@ -118,13 +116,13 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
             connection.close()
 
 
-def get_all_cross_trainning_exercice():
+def get_all_cross_trainning_exercice(user_id):
     try:
         connection = create_connection()
         cursor = connection.cursor()
-        sql = "get_all_cross_trainning_exercice.sql"
+        sql = "get_all_cross_trainning_exercice_for_the_user.sql"
         with open(sql, "r") as f:
-            cursor.execute(f.read())
+            cursor.execute(f.read(), (user_id,))
             cross_trainning_exercices = cursor.fetchone()
             cross_trainning_exercices = [
                 item for sublist in cross_trainning_exercices for item in sublist

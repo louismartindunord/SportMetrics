@@ -53,7 +53,7 @@ def push_sport_exercice(sport_name: str):
         connection.close()
 
 
-def push_cross_trainning_exercice(cross_trainning_exerice: str):
+def push_cross_trainning_exercice(cross_trainning_exerice: str, user_id):
     file = "sql/insert_cross_trainning_exercice.sql"
     connection = psycopg2.connect(
         host=HOST, database=DATABASE, user=USER, password=PASSWORD
@@ -62,7 +62,7 @@ def push_cross_trainning_exercice(cross_trainning_exerice: str):
     try:
         with open(file, "r") as f:
             command = f.read()
-            cursor.execute(command, (cross_trainning_exerice,))
+            cursor.execute(command, (cross_trainning_exerice, user_id))
             connection.commit()
     except (Exception, psycopg2.Error) as error:
         print(f"Error while creating tables: {error}")
