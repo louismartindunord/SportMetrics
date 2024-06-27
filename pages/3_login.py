@@ -1,6 +1,6 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-from utils.users_authentification import connexion_form, register_user
+from utils.users_authentification import connexion_form, register_user, get_user_id
 from utils.session_state import session_state_initialisation
 from utils.pages import show_page
 
@@ -14,7 +14,8 @@ authentication_status, username = connexion_form()
 if authentication_status:
     st.success(f"Vous êtes connecté en tant que {username}")
     st.session_state["username"] = username
-    print(st.session_state["user_id"])
+    user_id = get_user_id(username)
+    st.session_state["user_id"] = user_id
     st.session_state["authenticated"] = True
     st.switch_page("main.py")
 

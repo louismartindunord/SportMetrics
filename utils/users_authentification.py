@@ -138,5 +138,22 @@ def connexion_form():
     return authentication_status, name
 
 
-if __name__ == "__main__":
-    test()
+def get_user_id(user_name):
+    if user_name != None and st.session_state["user_id"] != None:
+        try:
+            connexion = create_connection()
+            cursor = connexion.cursor()
+            with open(get_user_id.sql, "r") as f:
+                cursor.execute(f.read(), (user_name,))
+                user_id_array = cursor.fetchone()
+            user_id = [item for sublist in user_id_array for item in sublist]
+            return user_id
+
+        except (Exception, psycopg2.Error) as error:
+            print(f"Error while fetching data: {error}")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if connexion:
+                connexion.close()

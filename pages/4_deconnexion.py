@@ -14,7 +14,7 @@ if username or user_id:
 
     for key in list(st.session_state.keys()):
         del st.session_state[key]
-    st.set_query_params()
-    st.rerun()
+        print("Vous êtes déconnecté.")
+
 else:
     st.success("Vous êtes déconnecté.")

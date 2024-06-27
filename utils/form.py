@@ -9,12 +9,11 @@ from .insert import (
     push_cross_trainning_serie,
 )
 from .data_extraction import get_muscle_area, get_all_cross_trainning_exercice
-from .session_state import session_state_initialisation
 
 
-def insert_add_sport_form(horizontal_menu="Musculation"):
+def insert_add_sport_form(sports_selection: str, user_id: int):
 
-    if horizontal_menu == "Musculation":
+    if sports_selection == "Musculation":
         muscleareas = get_muscle_area()
         select_musclearea = st.selectbox(
             "Quelle est la zone musuculaire ?", options=muscleareas
@@ -30,7 +29,7 @@ def insert_add_sport_form(horizontal_menu="Musculation"):
             except:
                 st.error("Avez vous rentré les informations")
 
-    elif horizontal_menu == "Sport":
+    elif sports_selection == "Sport":
         sport_name = st.text_input("Quelle est le nom du sport ?")
         sport_name = sport_name.title()
         if st.button(label="Envoyer"):
@@ -43,7 +42,7 @@ def insert_add_sport_form(horizontal_menu="Musculation"):
             except:
                 st.error("erreur")
 
-    elif horizontal_menu == "Cross-Trainning":
+    elif sports_selection == "Cross-Trainning":
         serie_or_exercice = st.selectbox(
             "Voulez vous ajoutez une serie ou un exercice ?",
             options=["Exercice", "Serie"],
@@ -53,7 +52,7 @@ def insert_add_sport_form(horizontal_menu="Musculation"):
             if st.button(label="Envoyer"):
                 cross_trainning_exerice = cross_trainning_exerice.title()
                 try:
-                    push_cross_trainning_exercice(cross_trainning_exerice)
+                    push_cross_trainning_exercice(cross_trainning_exerice, user_id)
                     st.success("Sport enregistré")
 
                 except errors.UniqueViolation as e:
@@ -63,7 +62,7 @@ def insert_add_sport_form(horizontal_menu="Musculation"):
 
         elif serie_or_exercice == "Serie":
             user_id = st.session_state["user_id"]
-            cross_trainning_exerices = get_all_cross_trainning_exercice()
+            cross_trainning_exerices = get_all_cross_trainning_exercice(user_id)
             serie_name = st.text_input("Donner un nom à cette serie")
             created_cross_serie = pd.DataFrame(
                 data=None, columns=["Exercice", "Nbr de répétition", "durée"]
