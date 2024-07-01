@@ -120,14 +120,12 @@ def get_all_cross_trainning_exercice(user_id):
     try:
         connection = create_connection()
         cursor = connection.cursor()
-        sql = "get_all_cross_trainning_exercice_for_the_user.sql"
+        sql = "sql/get_all_cross_trainning_exercice_for_the_user.sql"
         with open(sql, "r") as f:
             cursor.execute(f.read(), (user_id,))
-            cross_trainning_exercices = cursor.fetchone()
-            cross_trainning_exercices = [
-                item for sublist in cross_trainning_exercices for item in sublist
-            ]
-            return cross_trainning_exercices
+            list_cross_trainning_exercices = cursor.fetchone()
+
+            return list_cross_trainning_exercices
 
     except (Exception, psycopg2.Error) as error:
         print(f"Error while fetching data: {error}")

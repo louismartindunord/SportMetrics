@@ -139,18 +139,23 @@ def connexion_form():
 
 
 def get_user_id(user_name):
-    if user_name != None and st.session_state["user_id"] != None:
+    if user_name is not None:
         try:
             connexion = create_connection()
             cursor = connexion.cursor()
-            with open(get_user_id.sql, "r") as f:
+            with open("sql/get_user_id_from_username.sql", "r") as f:
                 cursor.execute(f.read(), (user_name,))
                 user_id_array = cursor.fetchone()
-            user_id = [item for sublist in user_id_array for item in sublist]
-            return user_id
+                if user_id_array:
+                    user_id = user_id_array[0]
+                    return user_id
+                else:
+                    print("No user_id found for the given username")
+                    return None
 
         except (Exception, psycopg2.Error) as error:
             print(f"Error while fetching data: {error}")
+            return None
 
         finally:
             if cursor:

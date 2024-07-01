@@ -62,6 +62,7 @@ def insert_add_sport_form(sports_selection: str, user_id: int):
 
         elif serie_or_exercice == "Serie":
             user_id = st.session_state["user_id"]
+            print(user_id)
             cross_trainning_exerices = get_all_cross_trainning_exercice(user_id)
             serie_name = st.text_input("Donner un nom à cette serie")
             created_cross_serie = pd.DataFrame(
@@ -80,7 +81,7 @@ def insert_add_sport_form(sports_selection: str, user_id: int):
                     )
                 },
             )
-            if st.button("Créer serie") and edited_cross_serie:
+            if st.button("Créer serie") and edited_cross_serie is not None:
                 try:
                     push_cross_trainning_serie(serie_name, edited_cross_serie, user_id)
                     st.success("Sport enregistré")

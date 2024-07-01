@@ -10,6 +10,7 @@ show_page()
 
 
 username, user_id = session_state_initialisation()
+print("user_id : ", user_id)
 if st.session_state["username"]:
     sports_selection = option_menu(
         "Quel type d'exercice",

@@ -12,12 +12,10 @@ username, user_id = session_state_initialisation()
 
 authentication_status, username = connexion_form()
 if authentication_status:
-    st.success(f"Vous êtes connecté en tant que {username}")
     st.session_state["username"] = username
     user_id = get_user_id(username)
     st.session_state["user_id"] = user_id
     st.session_state["authenticated"] = True
-    st.switch_page("main.py")
 
 elif authentication_status is False:
     st.error("Le mot de passe ou le pseudo n'est pas reconnu")
