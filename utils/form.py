@@ -7,6 +7,7 @@ from .insert import (
     push_musculation_exercice,
     push_cross_trainning_exercice,
     push_cross_trainning_serie,
+    push_cross_exercices_to__serie,
 )
 from .data_extraction import get_muscle_area, get_all_cross_trainning_exercice
 
@@ -83,7 +84,11 @@ def insert_add_sport_form(sports_selection: str, user_id: int):
             )
             if st.button("Créer serie") and edited_cross_serie is not None:
                 try:
-                    push_cross_trainning_serie(serie_name, edited_cross_serie, user_id)
+                    serie_id = push_cross_trainning_serie(
+                        serie_name, edited_cross_serie, user_id
+                    )
+                    push_cross_exercices_to__serie(series_id, exercises_df)
+
                     st.success("Sport enregistré")
 
                 except errors.UniqueViolation as e:

@@ -1,5 +1,6 @@
 from st_pages import show_pages, hide_pages, Page, add_page_title
 from utils.users_authentification import is_connected
+import streamlit as st
 
 
 def show_page():
@@ -36,3 +37,5 @@ def show_page():
                 "pages/4_deconnexion.py",
             ]
         )
+        connexion_button = st.sidebar.popover("connexion")
+        connexion_button.write("lala")
