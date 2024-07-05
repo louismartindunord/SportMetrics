@@ -12,7 +12,7 @@ from .insert import (
 from .data_extraction import get_muscle_area, get_all_cross_trainning_exercice
 
 
-def insert_add_sport_form(sports_selection: str, user_id: int):
+def insert_add_sport_form(sports_selection: str):
 
     if sports_selection == "Musculation":
         muscleareas = get_muscle_area()
@@ -53,7 +53,7 @@ def insert_add_sport_form(sports_selection: str, user_id: int):
             if st.button(label="Envoyer"):
                 cross_trainning_exerice = cross_trainning_exerice.title()
                 try:
-                    push_cross_trainning_exercice(cross_trainning_exerice, user_id)
+                    push_cross_trainning_exercice(cross_trainning_exerice)
                     st.success("Sport enregistré")
 
                 except errors.UniqueViolation as e:
@@ -62,9 +62,7 @@ def insert_add_sport_form(sports_selection: str, user_id: int):
                     st.error("erreur")
 
         elif serie_or_exercice == "Serie":
-            user_id = st.session_state["user_id"]
-            print(user_id)
-            cross_trainning_exerices = get_all_cross_trainning_exercice(user_id)
+            cross_trainning_exerices = get_all_cross_trainning_exercice()
             serie_name = st.text_input("Donner un nom à cette serie")
             created_cross_serie = pd.DataFrame(
                 data=None, columns=["Exercice", "Nbr de répétition", "durée"]
@@ -85,7 +83,8 @@ def insert_add_sport_form(sports_selection: str, user_id: int):
             if st.button("Créer serie") and edited_cross_serie is not None:
                 try:
                     serie_id = push_cross_trainning_serie(
-                        serie_name, edited_cross_serie, user_id
+                        serie_name,
+                        edited_cross_serie,
                     )
                     push_cross_exercices_to__serie(series_id, exercises_df)
 
