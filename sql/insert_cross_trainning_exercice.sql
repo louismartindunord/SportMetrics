@@ -1,2 +1,2 @@
-INSERT INTO  cross_trainning_exercices(name, user_id) 
+INSERT INTO  cross_trainning_exercices(name) 
 values (%s, %s);
