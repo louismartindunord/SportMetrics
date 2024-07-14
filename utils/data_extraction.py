@@ -116,7 +116,7 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
             connection.close()
 
 
-def get_all_cross_trainning_exercice(user_id):
+def get_all_cross_trainning_exercice():
     try:
         connection = create_connection()
         cursor = connection.cursor()

@@ -8,6 +8,7 @@ def show_page():
         Page("main.py", "Accueil", "🏠"),
         Page("pages/2_Visualisation.py", "Vos métriques"),
         Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
+        Page("pages/4_connexion.py", "Connexion"),
     ]
 
     show_pages(
@@ -15,5 +16,6 @@ def show_page():
             Page("main.py", "Accueil", "🏠"),
             Page("pages/2_Visualisation.py", "Vos métriques"),
             Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
+            Page("pages/4_connexion.py", "Connexion"),
         ]
     )

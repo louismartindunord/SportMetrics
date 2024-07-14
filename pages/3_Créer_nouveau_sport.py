@@ -15,3 +15,4 @@ sports_selection = option_menu(
     orientation="horizontal",
 )
 insert_add_sport_form(sports_selection)
+
