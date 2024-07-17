@@ -1,4 +1,3 @@
- SELECT username,
+SELECT username,
         password
-FROM users 
-WHERE username = "%s"
+FROM users WHERE username = %s;

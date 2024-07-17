@@ -1,10 +1,34 @@
+from utils.data_extraction import create_connection
 import streamlit as st
 import argon2
-import psycopg2
-import os
-from dotenv import load_dotenv
-from utils.form_user_management import login_form
 
 
-if __name__ == "__main__":
-    login_form()
+from utils.user_authentification import (
+    sessions_state,
+    Authentificator,
+    login_success,
+    user_creation_form,
+    login_form,
+    verify_user,
+    guest_connexion,
+)
+
+st.session_state = sessions_state()
+
+
+user_creation, user_login, guest = st.tabs(
+    [
+        "Créer un compte utilisateur",
+        "Se connecter",
+        "Se connecter en tant que visiteur",
+    ]
+)
+
+with user_creation:
+    user_creation_form(form_key="user_creation")
+
+with user_login:
+    login_form(form_key="login")
+
+with guest:
+    guest_connexion()

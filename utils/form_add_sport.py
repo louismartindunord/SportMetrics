@@ -12,7 +12,9 @@ from .insert import (
 from .data_extraction import get_muscle_area, get_all_cross_trainning_exercice
 
 
-def insert_add_sport_form(sports_selection: str):
+def insert_add_sport_form(
+    sports_selection: str,
+):
 
     if sports_selection == "Musculation":
         muscleareas = get_muscle_area()

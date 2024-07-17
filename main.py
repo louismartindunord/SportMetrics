@@ -2,20 +2,30 @@ import streamlit as st
 import pandas as pd
 from utils.data_extraction import get_all_sport
 from streamlit_card import card
+import datetime
+from streamlit_option_menu import option_menu
 from utils.data_extraction import (
     get_muscle_area,
     get_last_seances,
     get_musculation_exerices_from_muscle_area,
     get_all_sport,
 )
+from utils.user_authentification import sessions_state
 from utils.insert import send_serie
-import datetime
-from streamlit_option_menu import option_menu
-
 
 from utils.pages import show_page
 
 show_page()
+
+sessions_state = sessions_state()
+user_id = sessions_state["user_id"]
+username = sessions_state["username"]
+
+print(user_id)
+
+if username is not None:
+    st.sidebar.write("Bonjour ", username)
+
 today = datetime.datetime.today()
 horizontal_menu = option_menu(
     "Séléctionner votre entraînement",
