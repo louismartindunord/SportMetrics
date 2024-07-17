@@ -19,7 +19,7 @@ PASSWORD = os.getenv("PASSWORD")
 PORT = os.getenv("PORT")
 
 
-def push_musculation_exercice(sport_name: str, muscle_area: str):
+def push_musculation_exercice(sport_name: str, muscle_area: str, username: str):
     file = "sql/insert_musculation_exercices.sql"
     connection = psycopg2.connect(
         host=HOST, database=DATABASE, user=USER, password=PASSWORD
@@ -28,7 +28,7 @@ def push_musculation_exercice(sport_name: str, muscle_area: str):
     try:
         with open(file, "r") as f:
             command = f.read()
-        cursor.execute(command, (sport_name, muscle_area))
+        cursor.execute(command, (sport_name, muscle_area, username))
         connection.commit()
     except (Exception, psycopg2.Error) as error:
         print(f"Error while creating tables: {error}")
