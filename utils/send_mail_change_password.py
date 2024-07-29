@@ -135,9 +135,3 @@ def change_password_via_back(email: str, password: str):
             cursor.close()
         if connection:
             connection.close()
-
-
-if __name__ == "__main__":
-    change_password_via_back(
-        email="l.martindunord@gmail.com", password="bobmarley1234;"
-    )
