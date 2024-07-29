@@ -2,11 +2,14 @@ import streamlit as st
 from utils.form_add_sport import insert_add_sport_form
 from utils.pages import show_page
 from streamlit_option_menu import option_menu
-from utils.user_authentification import sessions_state
+from utils.cookie_management import sessions_state
 
 
-def main():
-    sessions_state = sessions_state()
+sessions_state = sessions_state()
+
+
+def main(sessions_state):
+
     user_id = sessions_state["user_id"]
 
     st.set_page_config(page_title="3_Créer_nouveau_sport", page_icon="📝")
@@ -36,4 +39,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sessions_state)
