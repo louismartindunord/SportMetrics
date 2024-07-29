@@ -1,3 +1,2 @@
-SELECT username,
-        password
+SELECT username,password
 FROM users WHERE username = %s;

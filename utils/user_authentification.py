@@ -59,6 +59,28 @@ def get_user_id(username):
                 connection.close()
 
 
+def get_user_right(username):
+    session_data = sessions_state()
+    if st.session_state["user_right"] == None:
+        try:
+            connection = create_connection()
+            cursor = connection.cursor()
+            sql = "SELECT user_right FROM users WHERE username = %s"
+            cursor.execute(sql, (username,))
+            user_right = cursor.fetchone()
+            user_right = user_right[0]
+            st.session_state["user_right"] = user_right
+            return user_right
+        except Exception as e:
+            print(f"Erreur lors de la récupération de l'ID utilisateur : {e}")
+            return None
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+
+
 def login_success(message: str, username: str) -> None:
     st.session_state["authenticated"] = True
     st.session_state["username"] = username
@@ -92,7 +114,7 @@ def create_user_in_postgres_db(username: str, hashed_password: str, email: str):
         with open("sql/create_user.sql", "r") as f:
             cursor.execute(f.read(), (username, hashed_password, email))
             connexion.commit()
-            login_success("Le compte a bien été créer")
+            login_success("Le compte a bien été créer", username)
 
     except Exception as e:
         st.error(str(e))
@@ -128,18 +150,20 @@ def verify_user(username: str, password: str):
         connexion = create_connection()
         cursor = connexion.cursor()
         with open("sql/verify_user.sql", "r") as f:
-            cursor.execute(f.read(), (username,))
+            query = f.read()
+            cursor.execute(query, (username,))
             result = cursor.fetchone()
-            if result:
-                db_username, db_password = result
-                if auth.verify_password(db_password, password):
-                    login_success("Connexion réussie", username)
-                else:
-                    st.error("Username ou mot de passe non reconnus")
-                    st.session_state["authenticated"] = False
+
+        if result:
+            db_username, db_password = result
+            if auth.verify_password(db_password, password):
+                login_success("Connexion réussie", username)
             else:
                 st.error("Username ou mot de passe non reconnus")
                 st.session_state["authenticated"] = False
+        else:
+            st.error("Username ou mot de passe non reconnus")
+            st.session_state["authenticated"] = False
     except Exception as e:
         st.error("Erreur lors de la vérification de l'utilisateur : " + str(e))
         st.session_state["authenticated"] = False
