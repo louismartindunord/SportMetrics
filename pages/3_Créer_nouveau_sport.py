@@ -11,6 +11,7 @@ sessions_state = sessions_state()
 def main(sessions_state):
 
     user_id = sessions_state["user_id"]
+    print(sessions_state["user_right"])
 
     st.set_page_config(page_title="3_Créer_nouveau_sport", page_icon="📝")
     show_page()
@@ -21,21 +22,7 @@ def main(sessions_state):
         default_index=0,
         orientation="horizontal",
     )
-    if sessions_state["user_right"] == "admin" and sports_selection == "Musculation":
-        insert_add_sport_form(sports_selection)
-
-    elif (
-        (sports_selection == "Sport" and sessions_state["user_id"] != None)
-        or sports_selection == "Cross-Trainning"
-        and sessions_state["user_id"] != None
-    ):
-        insert_add_sport_form(sports_selection)
-    elif sports_selection == "Musculation" and sessions_state["user_right"] != "admin":
-        st.error(
-            "Seul les utilisateurs administrateurs peuvent ajouter un exercice de musculation"
-        )
-    else:
-        st.error("Vous devez être connecté pour ajouter une sport.")
+    insert_add_sport_form(sports_selection)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 def create_connection():
     load_dotenv()
-
     DATABASE = os.getenv("DATABASE")
     HOST = os.getenv("HOST")
     USER = os.getenv("USER")
@@ -22,7 +21,6 @@ def get_all_sport():
     file = "sql/select_sport.sql"
     connection = create_connection()
     with open(file, "r") as f:
-
         cursor = connection.cursor()
         cursor.execute(f.read())
         data = cursor.fetchall()
@@ -48,11 +46,10 @@ def get_muscle_area():
 
 
 def get_last_seances(sport_type):
-    try:
-        connection = create_connection()
-        cursor = connection.cursor()
-
-        if sport_type == "Musculation":
+    connection = create_connection()
+    cursor = connection.cursor()
+    if sport_type == "Musculation":
+        try:
             get_last_musculation_query = "sql/get_last_musculation_seance.sql"
             with open(get_last_musculation_query, "r") as f:
                 cursor.execute(f.read())
@@ -60,17 +57,21 @@ def get_last_seances(sport_type):
                 last_musculation_seance = pd.DataFrame(
                     last_musculation_seance,
                     columns=[
-                        "Date",
-                        "Zone Musculaire",
-                        "Exercice",
-                        "Poid",
-                        "nbr_de_répétition",
+                        "date_seance",
+                        "sport",
+                        "exercice",
+                        "duree",
                         "commentaire",
                     ],
                 )
                 return last_musculation_seance
 
-        elif sport_type == "Sport":
+        except (Exception, psycopg2.Error) as error:
+            print(f"Error while fetching data: {error}")
+            return None, None
+
+    elif sport_type == "Sport":
+        try:
             get_last_sport_query = "sql/get_last_sport_seance.sql"
             with open(get_last_sport_query, "r") as f:
                 cursor.execute(f.read())
@@ -81,18 +82,18 @@ def get_last_seances(sport_type):
                 )
             return last_sport_seance
 
-        elif sport_type == "Cross-Trainning":
-            pass
+        except (Exception, psycopg2.Error) as error:
+            print(f"Error while fetching data: {error}")
+            return None, None  # Ensure the function always returns a tuple
 
-    except (Exception, psycopg2.Error) as error:
-        print(f"Error while fetching data: {error}")
-        return None, None  # Ensure the function always returns a tuple
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
 
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+            elif sport_type == "Cross-Trainning":
+                pass
 
 
 def get_musculation_exerices_from_muscle_area(muscle_area):
@@ -116,7 +117,7 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
             connection.close()
 
 
-def get_all_cross_trainning_exercice():
+def get_all_cross_trainning_exercice(user_id):
     try:
         connection = create_connection()
         cursor = connection.cursor()

@@ -1,9 +1,7 @@
 from st_pages import show_pages, hide_pages, Page, add_page_title
 import streamlit as st
 
-from utils.user_authentification import sessions_state
-
-# Assurez-vous que sessions_state retourne un dictionnaire complet des états de session
+from utils.cookie_management import sessions_state
 
 
 def show_page():

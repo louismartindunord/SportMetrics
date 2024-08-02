@@ -30,7 +30,7 @@ def import_all_data(user):
 
 
 def calculate_time_delta(date_options: str):
-    today = datetime.datetime.today() # type: ignore
+    today = datetime.datetime.today()  # type: ignore
     if date_options == "Semaine":
         time_delta = today - timedelta(days=7)
     elif date_options == "mois":

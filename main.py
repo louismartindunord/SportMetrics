@@ -17,12 +17,10 @@ from utils.pages import show_page
 
 show_page()
 
-sessions_state = sessions_state()
-
 
 def main(session_state):
-    user_id = sessions_state["user_id"]
-    username = sessions_state["username"]
+    user_id = sessions_state["user_id"]  # type: ignore
+    username = sessions_state["username"]  # type: ignore
     if username is not None:
         st.sidebar.write("Bonjour ", username)
 
@@ -95,4 +93,5 @@ def main(session_state):
 
 
 if __name__ == "__main__":
+    sessions_state = sessions_state()
     main(session_state=sessions_state)

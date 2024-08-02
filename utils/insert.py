@@ -139,10 +139,10 @@ def send_serie(
 
 
 def push_cross_trainning_serie(serie_name, edited_cross_serie, user_id):
+    connection = create_connection()
+    cursor = connection.cursor()
     try:
         sql = "sql/create_cross_trainning_serie.sql"
-        connection = create_connection()
-        cursor = connection.cursor()
         cursor.execute(sql, (serie_name, user_id))
         series_id = cursor.fetchone()[0]
         return series_id
@@ -154,15 +154,15 @@ def push_cross_trainning_serie(serie_name, edited_cross_serie, user_id):
     finally:
         if cursor:
             cursor.close()
-        if connexion:
-            connexion.close()
+        if connection:
+            connection.close()
 
 
 def push_cross_exercices_to__serie(series_id, exercises_df):
     try:
-        connection = create_connexion()
+        connection = create_connection()
         cursor = connection.cursor()
-        with open(insert_exercises_to_cross_serie.sql, "r") as f:
+        with open("sql/insert_exercises_to_cross_serie.sql", "r") as f:
             for index, row in edited_cross_serie.iterrows():
                 cursor.execute(f.read(), (series_id, row["Exercice"]))
     except (Exception, psycopg2.Error) as error:

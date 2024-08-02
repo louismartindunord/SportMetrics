@@ -2,6 +2,8 @@ from utils.data_extraction import create_connection
 import streamlit as st
 import argon2
 
+from utils.cookie_management import sessions_state
+
 
 class Authentificator(argon2.PasswordHasher):
     def generate_pwd_hash(self, password):
@@ -19,18 +21,6 @@ def hash_password(password):
     return auth.generate_pwd_hash(password)
 
 
-def sessions_state() -> dict:
-    session_keys = ["authenticated", "username", "user_id", "user_right"]
-    for key in session_keys:
-        if key not in st.session_state:
-            st.session_state[key] = None
-
-    if st.session_state["authenticated"] is None:
-        st.session_state["authenticated"] = False
-
-    return {key: st.session_state[key] for key in session_keys}
-
-
 def user_deconnexion():
     session_keys = ["authenticated", "username", "user_id", "user_right"]
     for key in session_keys:
@@ -46,7 +36,7 @@ def get_user_id(username):
             sql = "SELECT id FROM users WHERE username = %s"
             cursor.execute(sql, (username,))
             user_id = cursor.fetchone()
-            user_id = user_id[0]
+            user_id = user_id[0]  # type: ignore
             st.session_state["user_id"] = user_id
             return user_id
         except Exception as e:
@@ -68,7 +58,7 @@ def get_user_right(username):
             sql = "SELECT user_right FROM users WHERE username = %s"
             cursor.execute(sql, (username,))
             user_right = cursor.fetchone()
-            user_right = user_right[0]
+            user_right = user_right[0]  # type: ignore
             st.session_state["user_right"] = user_right
             return user_right
         except Exception as e:
@@ -82,13 +72,14 @@ def get_user_right(username):
 
 
 def login_success(message: str, username: str) -> None:
+    st.session_state["user_right"] = get_user_right(username)
     st.session_state["authenticated"] = True
     st.session_state["username"] = username
     st.session_state["user_id"] = get_user_id(username)
     st.success(message)
 
 
-def user_creation_form(form_key: int):
+def user_creation_form(form_key):
     auth = Authentificator()
     with st.form(key=form_key):
         username = st.text_input(

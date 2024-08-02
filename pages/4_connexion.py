@@ -4,7 +4,6 @@ import argon2
 
 
 from utils.user_authentification import (
-    sessions_state,
     Authentificator,
     login_success,
     user_creation_form,
@@ -12,6 +11,8 @@ from utils.user_authentification import (
     verify_user,
     guest_connexion,
 )
+
+from utils.cookie_management import sessions_state
 
 st.session_state = sessions_state()
 
