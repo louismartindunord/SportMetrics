@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.cookie_management import sessions_state
+from utils.cookie_connection import sessions_state
 from streamlit_option_menu import option_menu
 import datetime
 
@@ -13,16 +13,17 @@ show_page()
 
 if st.session_state["username"]:
     date_options = option_menu(
-        menu_title="quelle période"
+        menu_title="quelle période",
         options=["Semaine", "Mois", "Années"],
         default_index=0,
-        orientation="horizontal")   
-    
+        orientation="horizontal",
+    )
+
     if date_options == "Semaine":
         pass
-         
+
     elif date_options == "Mois":
         pass
 
-    elif date_options =="Années": 
+    elif date_options == "Années":
         pass

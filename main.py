@@ -10,7 +10,7 @@ from utils.data_extraction import (
     get_musculation_exerices_from_muscle_area,
     get_all_sport,
 )
-from utils.cookie_management import sessions_state
+from utils.cookie_connection import sessions_state
 from utils.insert import send_serie
 
 from utils.pages import show_page

@@ -117,14 +117,14 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
             connection.close()
 
 
-def get_all_cross_trainning_exercice(user_id):
+def get_all_cross_trainning_exercice():
     try:
         connection = create_connection()
         cursor = connection.cursor()
         sql = "sql/get_all_cross_trainning_exercice_for_the_user.sql"
         with open(sql, "r") as f:
-            cursor.execute(f.read(), (user_id,))
-            list_cross_trainning_exercices = cursor.fetchone()
+            cursor.execute(f.read())
+            list_cross_trainning_exercices = cursor.fetchall()
 
             return list_cross_trainning_exercices
 

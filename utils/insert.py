@@ -3,8 +3,9 @@ from sqlalchemy import create_engine
 import psycopg2
 from psycopg2 import sql, errors
 import numpy as np
+import pandas as pd
 
-from utils.data_extraction import create_connection
+from utils.cookie_connection import create_connection, create_pandas_connection_engine
 
 import os
 
@@ -55,7 +56,7 @@ def push_sport_exercice(sport_name: str):
         connection.close()
 
 
-def push_cross_trainning_exercice(cross_trainning_exerice: str, user_id):
+def push_cross_trainning_exercice(cross_trainning_exerice: str, select_musclearea: str):
     file = "sql/insert_cross_trainning_exercice.sql"
     connection = psycopg2.connect(
         host=HOST, database=DATABASE, user=USER, password=PASSWORD
@@ -64,7 +65,7 @@ def push_cross_trainning_exercice(cross_trainning_exerice: str, user_id):
     try:
         with open(file, "r") as f:
             command = f.read()
-            cursor.execute(command, (cross_trainning_exerice, user_id))
+            cursor.execute(command, (cross_trainning_exerice, select_musclearea))
             connection.commit()
     except (Exception, psycopg2.Error) as error:
         print(f"Error while creating tables: {error}")
@@ -138,14 +139,17 @@ def send_serie(
         connection.close()
 
 
-def push_cross_trainning_serie(serie_name, edited_cross_serie, user_id):
+def push_cross_training_serie(serie_name):
     connection = create_connection()
     cursor = connection.cursor()
     try:
-        sql = "sql/create_cross_trainning_serie.sql"
-        cursor.execute(sql, (serie_name, user_id))
-        series_id = cursor.fetchone()[0]
-        return series_id
+        # Lire le contenu du fichier SQL
+        with open("sql/create_cross_trainning_serie.sql", "r") as file:
+            query = file.read()
+
+        # Exécuter la requête SQL
+        cursor.execute(query, (serie_name,))
+        connection.commit()
 
     except (Exception, psycopg2.Error) as error:
         print(f"Error while inserting series: {error}")
@@ -158,18 +162,72 @@ def push_cross_trainning_serie(serie_name, edited_cross_serie, user_id):
             connection.close()
 
 
-def push_cross_exercices_to__serie(series_id, exercises_df):
+def get_cross_serie_id(serie_name):
+    connection = create_connection()
+    cursor = connection.cursor()
+    sql = """
+            SELECT series_id
+            FROM cross_trainning_series            
+            WHERE name = (%s) 
+            """
     try:
-        connection = create_connection()
-        cursor = connection.cursor()
-        with open("sql/insert_exercises_to_cross_serie.sql", "r") as f:
-            for index, row in edited_cross_serie.iterrows():
-                cursor.execute(f.read(), (series_id, row["Exercice"]))
+        cursor.execute(sql, (serie_name,))
+        serie_id = cursor.fetchone()
+        print("cross_training_serie_id : ", serie_id)
+        return int(serie_id[0])
+
     except (Exception, psycopg2.Error) as error:
-        print("error while inserting the exercice from this serie", error)
+        print(f"Error while inserting series: {error}")
+        return None
 
     finally:
         if cursor:
             cursor.close()
         if connection:
             connection.close()
+
+
+def get_cross_exercice_id(exercice_name):
+    connection = create_connection()
+    cursor = connection.cursor()
+    sql = """
+            SELECT exercices_id 
+            FROM cross_trainning_exercices 
+            WHERE name = (%s) 
+            """
+    try:
+        cursor.execute(sql, (exercice_name,))
+        exercice_id = cursor.fetchone()
+        return int(exercice_id[0])
+
+    except (Exception, psycopg2.Error) as error:
+        print(f"Error while inserting series: {error}")
+        return None
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
+def push_cross_exercises_to_serie(exercises_df, serie_name):
+    array_exercice_id = []
+    engine = create_pandas_connection_engine()
+    conn = engine.connect()
+
+    # Assuming get_cross_serie_id and get_cross_exercice_id are defined elsewhere
+    exercises_df["series_id"] = get_cross_serie_id(serie_name)
+
+    for index, row in exercises_df.iterrows():
+        exercice_id = get_cross_exercice_id(exercice_name=row["Exercice"])
+        array_exercice_id.append(exercice_id)
+
+    exercises_df["exercices_id"] = pd.Series(array_exercice_id)
+
+    df_to_push = exercises_df[
+        ["series_id", "exercices_id", "duree", "nombre_repetition"]
+    ]
+    df_to_push.to_sql(
+        name="series_exercices", con=conn, if_exists="append", index=False
+    )

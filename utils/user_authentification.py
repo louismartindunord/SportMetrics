@@ -2,7 +2,7 @@ from utils.data_extraction import create_connection
 import streamlit as st
 import argon2
 
-from utils.cookie_management import sessions_state
+from utils.cookie_connection import sessions_state
 
 
 class Authentificator(argon2.PasswordHasher):

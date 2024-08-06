@@ -1,7 +1,7 @@
 from st_pages import show_pages, hide_pages, Page, add_page_title
 import streamlit as st
 
-from utils.cookie_management import sessions_state
+from utils.cookie_connection import sessions_state
 
 
 def show_page():

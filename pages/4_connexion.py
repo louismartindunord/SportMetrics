@@ -12,7 +12,7 @@ from utils.user_authentification import (
     guest_connexion,
 )
 
-from utils.cookie_management import sessions_state
+from utils.cookie_connection import sessions_state
 
 st.session_state = sessions_state()
 
