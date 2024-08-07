@@ -9,9 +9,10 @@ from utils.data_extraction import (
     get_last_seances,
     get_musculation_exerices_from_muscle_area,
     get_all_sport,
+    get_all_cross_trainning_serie,
 )
 from utils.cookie_connection import sessions_state
-from utils.insert import send_serie
+from utils.insert import send_cross_serie, send_musculation_serie
 
 from utils.pages import show_page
 
@@ -61,7 +62,7 @@ def main(session_state):
             comments = st.text_area("voulez vous rajouter un commentaire")
 
             if st.button("envoyer"):
-                send_serie(
+                send_musculation_serie(
                     sport_type=horizontal_menu,
                     selected_date=selected_date,
                     selected_muscle_area=selected_muscle_area,
@@ -77,8 +78,26 @@ def main(session_state):
             unique_sports = get_all_sport()
             selected_sport_name = st.selectbox("Sport ?", options=unique_sports)
             durée = st.number_input("Durée?", min_value=0)
+
     elif horizontal_menu == "Cross-Trainning":
-        pass
+        all_cross_trainning_serie = get_all_cross_trainning_serie()
+        print(all_cross_trainning_serie)
+        selected_cross_trainning_serie = st.selectbox(
+            label="Quelle serie voulez vous faire", options=all_cross_trainning_serie
+        )
+        number_of_cross_trainning_serie = st.number_input(
+            label="Combien de répétitions", min_value=1
+        )
+        if st.button("envoyer"):
+            if (selected_cross_trainning_serie is not None) and (
+                number_of_cross_trainning_serie is not None
+            ):
+                send_cross_serie(
+                    selected_cross_trainning_serie_id=selected_cross_trainning_serie,
+                    number_of_cross_trainning_serie=number_of_cross_trainning_serie,
+                    user_id=user_id,
+                )
+
     with col2:
         try:
             last_exercice = get_last_seances(horizontal_menu)

@@ -58,9 +58,7 @@ def push_sport_exercice(sport_name: str):
 
 def push_cross_trainning_exercice(cross_trainning_exerice: str, select_musclearea: str):
     file = "sql/insert_cross_trainning_exercice.sql"
-    connection = psycopg2.connect(
-        host=HOST, database=DATABASE, user=USER, password=PASSWORD
-    )
+    connection = create_connection()
     cursor = connection.cursor()
     try:
         with open(file, "r") as f:
@@ -74,7 +72,7 @@ def push_cross_trainning_exercice(cross_trainning_exerice: str, select_muscleare
         connection.close()
 
 
-def send_serie(
+def send_musculation_serie(
     sport_type,
     selected_date,
     selected_muscle_area,
@@ -231,3 +229,33 @@ def push_cross_exercises_to_serie(exercises_df, serie_name):
     df_to_push.to_sql(
         name="series_exercices", con=conn, if_exists="append", index=False
     )
+
+
+def send_cross_serie(
+    selected_cross_trainning_serie_id: int,
+    number_of_cross_trainning_serie: int,
+    user_id: int,
+):
+    connection = create_connection
+    cursor = connection.cursor()
+    try:
+        with open("insert_cross_trainning_serie_rows", "r") as f:
+            connection.execute(
+                f,
+                (
+                    selected_cross_trainning_serie_id,
+                    number_of_cross_trainning_serie,
+                    user_id,
+                ),
+            )
+            connection.commit()
+
+    except (Exception, psycopg2.Error) as error:
+        print(f"Error while inserting series: {error}")
+        return None
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()

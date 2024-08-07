@@ -136,3 +136,27 @@ def get_all_cross_trainning_exercice():
             cursor.close()
         if connection:
             connection.close()
+
+
+def get_all_cross_trainning_serie():
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+        sql = """
+                SELECT name 
+                FROM cross_trainning_series
+                """
+
+        cursor.execute(sql)
+        data = cursor.fetchall()
+        cross_trainning_serie = [item for sublist in data for item in sublist]
+        return cross_trainning_serie
+
+    except (Exception, psycopg2.Error) as error:
+        print(f"Error while fetching data: {error}")
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
