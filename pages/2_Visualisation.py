@@ -4,26 +4,35 @@ from streamlit_option_menu import option_menu
 import datetime
 
 from utils.pages import show_page
-
-
-st.set_page_config(page_title="Visualisation", page_icon="📝")
 import matplotlib.pyplot as plt
-
+from utils.data_visualisation import import_all_data, filter_by_time_period
+st.set_page_config(
+    page_title="Votre Dashboard",
+    layout="wide",
+    )
 show_page()
 
-if st.session_state["username"]:
-    date_options = option_menu(
-        menu_title="quelle période",
-        options=["Semaine", "Mois", "Années"],
-        default_index=0,
-        orientation="horizontal",
-    )
+    
+def main():
+    st.title("Votre Dashboard")
+    st.session_state = sessions_state()
+    print(st.session_state["user_id"])
+    if  st.session_state["user_id"] == None :
+        st.write("Vous devez être connecté pour afficher vos données")
+        
+    else:
+        all_datas = import_all_data(st.session_state["user_id"])
+        #Filtrage des données en fonction de la période
+        date_options = option_menu(
+            menu_title="quelle période",
+            options=["Semaine", "Mois", "Année"],
+            default_index=0,
+            orientation="horizontal",
+        ) 
+        df = filter_by_time_period(all_datas,date_options)
+    
 
-    if date_options == "Semaine":
-        pass
-
-    elif date_options == "Mois":
-        pass
-
-    elif date_options == "Années":
-        pass
+  
+            
+if __name__ =="__main__":
+    main()

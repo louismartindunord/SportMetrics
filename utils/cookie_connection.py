@@ -8,7 +8,7 @@ import psycopg2
 
 load_dotenv()
 
-
+@st.cache_resource
 def sessions_state() -> dict:
     session_keys = ["authenticated", "username", "user_id", "user_right", "user_right"]
 
@@ -23,7 +23,7 @@ def sessions_state() -> dict:
 
     return {key: st.session_state[key] for key in session_keys}
 
-
+@st.cache_resource
 def create_connection():
     load_dotenv()
     DATABASE = os.getenv("DATABASE")
@@ -36,7 +36,7 @@ def create_connection():
     )
     return connection
 
-
+@st.cache_resource
 def create_pandas_connection_engine():
     load_dotenv()
     DATABASE = os.getenv("DATABASE")

@@ -2,7 +2,7 @@ import pandas as pd
 import psycopg2
 import os
 from dotenv import load_dotenv
-
+import streamlit as st
 
 def create_connection():
     load_dotenv()
@@ -16,7 +16,7 @@ def create_connection():
     )
     return connection
 
-
+@st.cache_data
 def get_all_sport():
     file = "sql/select_sport.sql"
     connection = create_connection()
@@ -29,7 +29,7 @@ def get_all_sport():
         connection.close()
     return sports
 
-
+@st.cache_data
 def get_muscle_area():
     sql = """
             SELECT DISTINCT(name)
@@ -44,7 +44,7 @@ def get_muscle_area():
     connection.close()
     return all_muscle_area
 
-
+@st.cache_data
 def get_last_seances(sport_type):
     connection = create_connection()
     cursor = connection.cursor()
@@ -95,7 +95,7 @@ def get_last_seances(sport_type):
             elif sport_type == "Cross-Trainning":
                 pass
 
-
+@st.cache_data
 def get_musculation_exerices_from_muscle_area(muscle_area):
     try:
         connection = create_connection()
@@ -116,7 +116,7 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
         if connection:
             connection.close()
 
-
+@st.cache_data
 def get_all_cross_trainning_exercice():
     try:
         connection = create_connection()

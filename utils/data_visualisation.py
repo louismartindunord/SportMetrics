@@ -6,8 +6,9 @@ import os
 
 from utils.data_extraction import create_connection
 from datetime import datetime, timedelta
+import streamlit as st
 
-
+@st.cache_data
 def import_all_data(user):
     try:
         connection = create_connection()
@@ -28,9 +29,9 @@ def import_all_data(user):
         if connection:
             connection.close()
 
-
+@st.cache_data
 def calculate_time_delta(date_options: str):
-    today = datetime.datetime.today()  # type: ignore
+    today = datetime.today()  # type: ignore
     if date_options == "Semaine":
         time_delta = today - timedelta(days=7)
     elif date_options == "mois":
@@ -38,3 +39,19 @@ def calculate_time_delta(date_options: str):
     elif date_options == "Années":
         time_delta = today - timedelta(days=365)
     return time_delta
+
+@st.cache_data
+def filter_by_time_period(df_all_sport: pd.DataFrame, time_analyse: str):
+    print(df_all_sport)
+    return 'lals'
+    #try: 
+    #    df_all_sport["date_seance"] = pd.to_datetime(df_all_sport["date_seance"])
+    #except: 
+    #    print("donnée date_seance déjà transformée")
+#
+    #date_series = calculate_time_delta(time_analyse)
+    #df_time_period = df_all_sport[
+    #    (df_all_sport["date_seance"] >= date_series.min()) & 
+    #    (df_all_sport["date_seance"] <= date_series.max())
+    #]
+    #return df_time_period
