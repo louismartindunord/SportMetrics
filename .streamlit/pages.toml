@@ -15,5 +15,13 @@ title = "Login"
 script = "pages/3_login.py"
 
 [[pages]]
+title = "Connexion"
+script = "pages/4_connexion.py"
+
+[[pages]]
 title = "Déconnexion"
-script = "pages/4_deconnexion.py"
+script = "pages/5_deconnexion.py"
+
+[[pages]]
+title ="Votre Profil"
+script = "pages/6_users_profile.py

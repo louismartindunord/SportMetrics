@@ -17,8 +17,8 @@ from utils.pages import show_page
 
 show_page()
 
-
 def main(session_state):
+    
     user_id = sessions_state["user_id"]  # type: ignore
     username = sessions_state["username"]  # type: ignore
     if username is not None:
@@ -37,7 +37,7 @@ def main(session_state):
     if horizontal_menu == "Musculation":
         with col1:
             is_today = st.selectbox(
-                "Faites vous une séance aujourd hui ? ", options=["oui", "non"]
+                "Faites vous une séance aujourd'hui ? ", options=["oui", "non"]
             )
             if is_today == "oui":
                 selected_date = today
@@ -52,15 +52,15 @@ def main(session_state):
                 selected_muscle_area
             )
             selected_exercice = st.selectbox(
-                "Selectionner l'exercice", options=exercice_for_muscle_area  # type: ignore
+                "Veuillez sélectionner l'exercice", options=exercice_for_muscle_area  # type: ignore
             )
-            poid = st.number_input("quelle poid (kg)?", min_value=0)
+            poid = st.number_input("Poid porté (kg)?", min_value=0)
             number_repetition = st.number_input(
-                "Combien de réps ?", min_value=0, step=1
+                "Nombre de répétitions ?", min_value=0, step=1
             )
-            comments = st.text_area("voulez vous rajouter un commentaire")
+            comments = st.text_area("Voulez vous rajouter un commentaire")
 
-            if st.button("envoyer"):
+            if st.button("Envoyer"):
                 send_serie(
                     sport_type=horizontal_menu,
                     selected_date=selected_date,

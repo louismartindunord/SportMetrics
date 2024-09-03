@@ -26,7 +26,7 @@ def user_deconnexion():
     for key in session_keys:
         st.session_state[key] = None
 
-
+@st.cache_data
 def get_user_id(username):
     session_data = sessions_state()
     if st.session_state["user_id"] == None:
@@ -48,7 +48,7 @@ def get_user_id(username):
             if connection:
                 connection.close()
 
-
+@st.cache_data
 def get_user_right(username):
     session_data = sessions_state()
     if st.session_state["user_right"] == None:
@@ -77,6 +77,7 @@ def login_success(message: str, username: str) -> None:
     st.session_state["username"] = username
     st.session_state["user_id"] = get_user_id(username)
     st.success(message)
+    
 
 
 def user_creation_form(form_key):
@@ -95,8 +96,9 @@ def user_creation_form(form_key):
             label="Créer", type="primary", disabled=st.session_state["authenticated"]
         ):
             hashed_password = auth.generate_pwd_hash(password)
-            create_user_in_postgres_db(username, hashed_password, email)
-
+            created_user = create_user_in_postgres_db(username, hashed_password, email)
+            #if created_user:
+                #redirect_user_to_user_informations_page()
 
 def create_user_in_postgres_db(username: str, hashed_password: str, email: str):
     try:
@@ -106,6 +108,7 @@ def create_user_in_postgres_db(username: str, hashed_password: str, email: str):
             cursor.execute(f.read(), (username, hashed_password, email))
             connexion.commit()
             login_success("Le compte a bien été créer", username)
+            return True
 
     except Exception as e:
         st.error(str(e))

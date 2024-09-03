@@ -24,5 +24,6 @@ def show_page():
                 Page("pages/2_Visualisation.py", "Vos métriques"),
                 Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
                 Page("pages/5_deconnexion.py", "Déconnexion"),
+                Page("pages/6_users_profile.py","Votre compte")
             ]
         )
