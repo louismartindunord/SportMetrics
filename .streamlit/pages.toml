@@ -1,5 +1,5 @@
 [[pages]]
-title ="Commencer une nouvelle Session"
+title = "Commencer une nouvelle Session"
 script = "main.py"
 
 [[pages]]
@@ -8,7 +8,7 @@ script = "pages/2_Visualisation.py"
 
 [[pages]]
 title = "Créer Nouveau Sport"
-script = "pages/3_Créer_nouveau_sport.py"
+script = "pages/3_Creer_nouveau_sport.py"
 
 [[pages]]
 title = "Login"
@@ -20,8 +20,8 @@ script = "pages/4_connexion.py"
 
 [[pages]]
 title = "Déconnexion"
-script = "pages/5_deconnexion.py"
+script = "pages/5_Deconnexion"
 
 [[pages]]
-title ="Votre Profil"
-script = "pages/6_users_profile.py
+title = "Votre Profil"
+script = "pages/6_users_profile.py"  

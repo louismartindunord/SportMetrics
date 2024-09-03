@@ -4,6 +4,8 @@ import argon2
 
 from utils.cookie_connection import sessions_state
 
+from utils.pages import show_page
+
 
 class Authentificator(argon2.PasswordHasher):
     def generate_pwd_hash(self, password):
@@ -26,6 +28,7 @@ def user_deconnexion():
     for key in session_keys:
         st.session_state[key] = None
 
+
 @st.cache_data
 def get_user_id(username):
     session_data = sessions_state()
@@ -47,6 +50,7 @@ def get_user_id(username):
                 cursor.close()
             if connection:
                 connection.close()
+
 
 @st.cache_data
 def get_user_right(username):
@@ -77,28 +81,24 @@ def login_success(message: str, username: str) -> None:
     st.session_state["username"] = username
     st.session_state["user_id"] = get_user_id(username)
     st.success(message)
-    
+    show_page()
 
 
 def user_creation_form(form_key):
     auth = Authentificator()
     with st.form(key=form_key):
-        username = st.text_input(
-            label="Pseudo", disabled=st.session_state["authenticated"]
-        )
+        username = st.text_input(label="Pseudo")
         password = st.text_input(
             label="Mot de passe",
             type="password",
-            disabled=st.session_state["authenticated"],
         )
         email = st.text_input(label="Email")
-        if st.form_submit_button(
-            label="Créer", type="primary", disabled=st.session_state["authenticated"]
-        ):
+        if st.form_submit_button(label="Créer", type="primary"):
             hashed_password = auth.generate_pwd_hash(password)
             created_user = create_user_in_postgres_db(username, hashed_password, email)
-            #if created_user:
-                #redirect_user_to_user_informations_page()
+            if created_user:
+                redirect_new_user_to_user_informations_page()
+
 
 def create_user_in_postgres_db(username: str, hashed_password: str, email: str):
     try:
@@ -120,19 +120,27 @@ def create_user_in_postgres_db(username: str, hashed_password: str, email: str):
             connexion.close()
 
 
+@st.dialog("Félicitations ! Votre compte a été créé avec succès 🎉")
+def redirect_new_user_to_user_informations_page():
+    st.write(
+        "C'est le moment de personnaliser votre expérience ! Ajoutez vos informations personnelles pour obtenir des Metrics encore plus précises et adaptées à vos besoins."
+    )
+    st.page_link("pages/6_Users_profile.py", label="Accéder à votre profil", icon="🏠")
+    st.write(
+        "Envie de commencer tout de suite ? Ajoutez vos sports préférés et intégrez-les dans votre routine dès maintenant !"
+    )
+    st.page_link("pages/3_Creer_nouveau_sport.py", label="Ajouter un sport")
+
+
 def login_form(form_key: str):
     with st.form(key=form_key):
-        username = st.text_input(
-            label="Se connecter", disabled=st.session_state["authenticated"]
-        )
+        username = st.text_input(label="Se connecter")
         password = st.text_input(
             label="Mot de passe",
             type="password",
-            disabled=st.session_state["authenticated"],
         )
         if st.form_submit_button(
             label="Se connecter",
-            disabled=st.session_state["authenticated"],
             type="primary",
         ):
             verify_user(username, password)
@@ -170,7 +178,5 @@ def verify_user(username: str, password: str):
 
 
 def guest_connexion():
-    if st.button(
-        label="Connexion", type="primary", disabled=st.session_state["authenticated"]
-    ):
+    if st.button(label="Connexion", type="primary"):
         st.session_state["authenticated"] = True

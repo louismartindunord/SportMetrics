@@ -8,13 +8,14 @@ def show_page():
     session_state = sessions_state()
     add_page_title()
 
-    if session_state["username"] == None:
+    if session_state["username"] is None:
         show_pages(
             [
                 Page("main.py", "Accueil", "🏠"),
                 Page("pages/2_Visualisation.py", "Vos métriques"),
-                Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
+                Page("pages/3_Creer_nouveau_sport.py", "Ajouter un sport"),
                 Page("pages/4_connexion.py", "Connexion"),
+                # Page("pages/6_Users_profile.py", "Votre compte", "👤"),
             ]
         )
     else:
@@ -22,8 +23,8 @@ def show_page():
             [
                 Page("main.py", "Accueil", "🏠"),
                 Page("pages/2_Visualisation.py", "Vos métriques"),
-                Page("pages/3_Créer_nouveau_sport.py", "Ajouter un sport"),
+                Page("pages/3_Creer_nouveau_sport.py", "Ajouter un sport"),
                 Page("pages/5_deconnexion.py", "Déconnexion"),
-                Page("pages/6_users_profile.py","Votre compte")
+                Page("pages/6_Users_profile.py", "Votre compte", "👤"),
             ]
         )
