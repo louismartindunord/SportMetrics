@@ -12,19 +12,18 @@ def show_page():
         show_pages(
             [
                 Page("main.py", "Accueil", "🏠"),
-                Page("pages/2_Visualisation.py", "Vos métriques"),
-                Page("pages/3_Creer_nouveau_sport.py", "Ajouter un sport"),
-                Page("pages/4_connexion.py", "Connexion"),
-                # Page("pages/6_Users_profile.py", "Votre compte", "👤"),
+                Page("pages/2_Visualisation.py", "Vos métriques", "🏅"),
+                Page("pages/3_Creer_nouveau_sport.py", "Ajouter un sport", "➕"),
+                Page("pages/4_connexion.py", "Connexion", "🔐"),
             ]
         )
     else:
         show_pages(
             [
                 Page("main.py", "Accueil", "🏠"),
-                Page("pages/2_Visualisation.py", "Vos métriques"),
-                Page("pages/3_Creer_nouveau_sport.py", "Ajouter un sport"),
-                Page("pages/5_deconnexion.py", "Déconnexion"),
+                Page("pages/2_Visualisation.py", "Vos métriques", "🏅"),
+                Page("pages/3_Creer_nouveau_sport.py", "Ajouter un sport", "➕"),
                 Page("pages/6_Users_profile.py", "Votre compte", "👤"),
+                Page("pages/5_deconnexion.py", "Déconnexion", "🚪"),
             ]
         )
