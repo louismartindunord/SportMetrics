@@ -1,0 +1,56 @@
+,date_seance,sport,exercice,duree,commentaire,id,user_id
+0,2024-02-24,Cardio,Vélo Elliptique,30.0,,26,19
+1,2024-02-24,Cardio,Cross Trainning,30.0,,27,19
+2,2024-02-24,Cardio,Tennis,60.0,,28,19
+3,2024-02-03,Cardio,Cross Trainning,,"20 pompes 
+20 ballons mur en équilibres 
+12 abdos avec poids 
+20 montée caisse 
+10abdos circulaire avec poid 
+20 Planche militaire ",95,19
+4,2024-04-03,Cardio,Tennis,60.0,,143,19
+5,2024-07-03,Cardio,Vélo Elliptique,25.0,,159,19
+6,2024-07-03,Cardio,,,"Pompes
+Epaules
+Abdo allongée jambes levée 
+Exercice avec poid 
+Planche 
+Abs Wheel
+Squat avec haltères 16kg",160,19
+7,2024-10-03,Cardio,Tennis,60.0,,188,19
+8,2024-03-24,Cardio,Tennis,60.0,,225,19
+9,2024-03-25,Cardio,Vélo Elliptique,30.0,"intensité 13 calorie 381 distances 2,72 km ",226,19
+10,2024-04-19,Cardio,Course sur Tapis,7.2,Intensité 8,311,19
+11,2024-04-27,Cardio,Vélo Elliptique,25.0,,337,19
+12,,Cardio,Cross Trainning,,"Séance de Cardio : 
+ Pompes 
+ Squat 15kg x15
+Abdos levée de jambes x15
+Fentes 16kg
+Montée de boxe 15x
+Abdo avec poid 10kg x 10",338,19
+13,2024-02-05,Cardio,Cross Trainning,60.0,,374,19
+14,2024-05-13,Cardio,Vélo Elliptique,30.0,,457,19
+15,2024-05-13,Cardio,Vélo Elliptique,10.0,,466,19
+16,2024-05-13,Cardio,Cross Trainning,60.0,,467,19
+17,2024-05-15,Cardio,Tennis,60.0,,487,19
+18,2024-05-18,Cardio,Cross Trainning,60.0,,507,19
+19,2024-05-21,Cardio,Course sur Tapis,,,554,19
+20,2024-05-21,Cardio,Tennis,60.0,,569,19
+21,2024-05-21,Cardio,Cross Trainning,60.0,,570,19
+22,2024-05-22,Cardio,Vélo Elliptique,30.0,,571,19
+23,2024-05-23,Cardio,Tennis,60.0,,594,19
+24,2024-05-27,Cardio,Cross Trainning,60.0,,642,19
+25,2024-05-29,Cardio,Vélo Elliptique,30.0,,655,19
+26,2024-06-03,Cardio,Tennis,60.0,,751,19
+27,2024-06-06,Cardio,Tennis,60.0,,784,19
+28,2024-06-09,Cardio,Tennis,120.0,,808,19
+29,2024-06-12,Cardio,Vélo Elliptique,30.0,,844,19
+30,2024-06-13,Cardio,Vélo Elliptique,30.0,,853,19
+31,2024-06-24,Cardio,Tennis,90.0,,917,19
+32,2024-06-29,Cardio,Vélo Elliptique,30.0,,983,19
+33,2024-06-29,Cardio,Tennis,60.0,,992,19
+34,2024-06-30,Cardio,Tennis,60.0,,993,19
+35,2024-07-01,Cardio,Stepper,,,1012,19
+36,2024-07-02,Cardio,Tennis,60.0,,1026,19
+37,2024-07-03,Cardio,Cross-Trainning,60.0,,1046,19

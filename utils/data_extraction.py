@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import streamlit as st
 
+
 def create_connection():
     load_dotenv()
     DATABASE = os.getenv("DATABASE")
@@ -15,6 +16,7 @@ def create_connection():
         host=HOST, database=DATABASE, user=USER, password=PASSWORD
     )
     return connection
+
 
 @st.cache_data
 def get_all_sport():
@@ -29,10 +31,11 @@ def get_all_sport():
         connection.close()
     return sports
 
+
 @st.cache_data
 def get_muscle_area():
     sql = """
-            SELECT DISTINCT(name)
+            SELECT muscle_area
             From muscle_area;
             """
     connection = create_connection()
@@ -40,9 +43,12 @@ def get_muscle_area():
     cursor.execute(sql)
     all_muscle_area = cursor.fetchall()
     all_muscle_area = [item for sublist in all_muscle_area for item in sublist]
+    print(type(all_muscle_area))
+
     connection.commit()
     connection.close()
     return all_muscle_area
+
 
 @st.cache_data
 def get_last_seances(sport_type):
@@ -95,6 +101,7 @@ def get_last_seances(sport_type):
             elif sport_type == "Cross-Trainning":
                 pass
 
+
 @st.cache_data
 def get_musculation_exerices_from_muscle_area(muscle_area):
     try:
@@ -115,6 +122,7 @@ def get_musculation_exerices_from_muscle_area(muscle_area):
             cursor.close()
         if connection:
             connection.close()
+
 
 @st.cache_data
 def get_all_cross_trainning_exercice():

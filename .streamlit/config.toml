@@ -3,3 +3,6 @@
 
 showWarningOnDirectExecution = false
 #showErrorDetails = false
+
+[server]
+runOnSave = true

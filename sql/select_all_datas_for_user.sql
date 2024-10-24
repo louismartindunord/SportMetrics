@@ -17,7 +17,7 @@ UNION ALL
 
 SELECT 
     musculation_rows.date_seance,
-    NULL AS sport, 
+    musculation_rows.sport as sport, 
     musculation_rows.exercice, 
     NULL AS duree,
     musculation_rows.seance,
