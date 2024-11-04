@@ -32,7 +32,6 @@ def sessions_state() -> dict:
     return {key: st.session_state[key] for key in session_keys}
 
 
-@st.cache_resource
 def create_connection():
     load_dotenv()
     DATABASE = os.getenv("DATABASE")
