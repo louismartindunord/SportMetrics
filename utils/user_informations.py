@@ -1,3 +1,5 @@
+from h11 import Data
+from sqlalchemy import column
 from utils.cookie_connection import create_connection
 import streamlit as st
 import datetime
@@ -10,107 +12,104 @@ from PIL import Image
 import PIL
 
 
+@st.cache_data
 def get_user_informations(user_id: int) -> pd.DataFrame:
-    connexion = None
-    cursor = None
-    try : 
-        connexion = create_connection()
-        cursor = connexion.cursor()
-    
-    except (Exception, psycopg2.Error) as error:
-        print('{} - connection will be reset'.format(error))
-        if cursor:
-            cursor.close()
-        if connexion:
-            connexion.close()
-        connexion = create_connection()
-        cursor = connexion.cursor()
-
-    finally:  
-        if cursor is not None: 
-            with open("sql/get_all_users_informations.sql", "r") as f:
-                cursor.execute(f.read(), (user_id,))
-                result = cursor.fetchall()
-                connexion.commit()
-            columns = [
-                "id",
-                "username",
-                "email",
-                "poid",
-                "taille",
-                "objectif",
-                "modification_date"      
-            ]
-            data = pd.DataFrame(result, columns=columns)
-            return data
-        else : 
-            print("Cursor or connection could not be established.")
-            return pd.DataFrame()
-
-
-
-
-
-
-
-@st.fragment
-def render_user_informations(user_info: pd.DataFrame, editable):
-
-    if st.session_state["user_informations_editable"] == False:
-        user_connexion_information_container = st.container(border=True)
-        user_connexion_information_container.write(f"Votre identifiant : {user_info["username"][0]}")
-        user_connexion_information_container.write(f"Votre email : {user_info["email"][0]}")
-        user_connexion_information_container.write(f"Votre poid : {user_info["poid"][0]} kg")
-        user_connexion_information_container.write(f"Votre taille : {user_info["taille"][0]} cm")
-        user_connexion_information_container.write(f"Votre objectif : {user_info["objectif"][0]}")
-        if st.button("modifier"):
-            st.session_state["user_informations_editable"] = True   
-            st.rerun()
-
-    else:
-        user_goal = ["Perdre du poid", "Prendre du muscle", "Me maintenir en forme"]
-        with st.form(key="user_informations_form"):
-            username = st.text_input("Votre pseudo : ", value=user_info["username"].iloc[0])
-            email = st.text_input("Votre email: ", value=user_info["email"].iloc[0])
-            user_weight = st.number_input("Quelle est votre poid (kg)?", )
-            user_height = st.number_input("Quelle est votre taille (cm)?")
-            user_goal = st.selectbox("Quel est votre objectif",options=user_goal)
-            submitted_user_informations_button = st.form_submit_button("Envoyer")
-            if submitted_user_informations_button:
-               post_user_information(username, email, user_weight,user_height, user_goal)
-              
-def post_user_information(username, email, user_weight, user_height, user_goal):
-    user_id = st.session_state["user_id"]
-    today = datetime.datetime.today()
-    connexion = create_connection()
-    cursor = connexion.cursor()
-
     try:
-        # 1. Mettre à jour l'utilisateur dans la table `users`
-        update_query = """
-        UPDATE users
-        SET username = %s, email = %s
-        WHERE username = %s;
-        """
-        cursor.execute(update_query, (username, email, username))
+        with create_connection() as connexion:
+            with connexion.cursor() as cursor:
+                with open("sql/get_all_users_informations.sql", "r") as f:
+                    cursor.execute(f.read(), (user_id,))
+                    result = cursor.fetchall()
+                    connexion.commit()
 
-        # 2. Insérer les informations supplémentaires dans la table `users_informations`
-        insert_query = """
-        INSERT INTO users_informations(user_id, poid, taille, objectif, modification_date)
-        VALUES (%s, %s, %s, %s, %s)
-        """
-        cursor.execute(insert_query, (user_id, user_weight, user_height, user_goal, today))
-        connexion.commit()
+                column = [
+                    "id",
+                    "username",
+                    "email",
+                    "poid",
+                    "taille",
+                    "objectif",
+                    "modification_date",
+                    "pourcentage_graisse",
+                    "pourcentage_muscle",
+                ]
+                data = pd.DataFrame(result, columns=column)
+                data = data.sort_values(by="modification_date", ascending=False)
+                data = data.drop_duplicates(subset="id", keep="first")
+                return data
+    except (Exception, psycopg2.Error) as error:
+        st.error(f"Erreur lors de la récupération des informations : {error}")
+        return pd.DataFrame()
 
-    except Exception as e:
-        # Gérer les erreurs
-        st.error(str(e))
-        st.session_state["authenticated"] = False
 
-    finally:
-        if cursor:
-            cursor.close()
-        if connexion:
-            connexion.close()
-            st.session_state["user_informations_editable"] = False
-        
+def separete_dataframe_to_dict(df_user_info: pd.DataFrame):
+    df_connexio_info = df_user_info[["email", "username"]]
+    df_connexio_info.columns = ["Votre mail", "Votre pseudo"]
+    df_person_infos = df_user_info[
+        ["poid", "objectif", "pourcentage_graisse", "pourcentage_muscle"]
+    ]
+    df_person_infos.columns = [
+        "Votre poid",
+        "Votre objectif",
+        "Votre taux de masse grasse",
+        "Votre taux de masse musculaire",
+    ]
+    user_id = df_user_info
+    return df_connexio_info.to_dict(), df_person_infos.to_dict()
+
+
+def keys_initialisation(key):
+    if f"edit_status_{key}" not in st.session_state:
+        st.session_state[f"edit_status_{key}"] = False
+
+    if "edit_status_dict" not in st.session_state:
+        st.session_state["edit_status_dict"] = {f"edit_status_{key}": False}
+
+
+def switch_to_editable_form(key, edit_status_dict, modifable=True):
+    if modifable == True:
+        st.session_state[f"edit_status_{key}"] = True
+        st.session_state["edit_status_dict"][f"edit_status_{key}"] = True
+
+    elif modifable == False:
+        st.session_state[f"edit_status_{key}"] = False
+        st.session_state["edit_status_dict"][f"edit_status_{key}"] = False
+
+
+def transform_data_to_push_in_db(infos_dict, infos_type, user_id):
+    if infos_type == "connexion_info":
+        new_columns = ["email", "username"]
+
+    elif infos_type == "person_infos":
+        new_columns = [
+            "poid",
+            "objectif",
+            "pourcentage_graisse",
+            "pourcentage_muscle",
+        ]
+    new_info_dict = {
+        new_key: infos_dict[old_key]
+        for new_key, old_key in zip(new_columns, infos_dict.keys())
+    }
+    new_info_dict["user_id"] = user_id
+
+    if infos_type == "person_infos":
+        new_info_dict = new_info_dict.update({"date": datetime.datetime.today()})
+
+    return new_info_dict
+
+
+def send_to_db(connexion_infos, infos_type):
+    if infos_type == "connexion_info":
+        file = "sql/update_user_informations.sql"
+    elif infos_type == "person_infos":
+        file = ""
+
+    with create_connection() as connexion:
+        with connexion.cursor() as cursor:
+            with open(file, "r") as f:
+                query = f.read()
+                print(f"Requête SQL : {query}")
+                print(f"Dictionnaire des paramètres : {connexion_infos}")
+                cursor.execute(query, connexion_infos)
+                connexion.commit()
