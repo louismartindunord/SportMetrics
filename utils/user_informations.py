@@ -1,4 +1,3 @@
-from h11 import Data
 from sqlalchemy import column
 from utils.cookie_connection import create_connection
 import streamlit as st
@@ -6,10 +5,6 @@ import datetime
 import psycopg2
 import pandas as pd
 import numpy as np
-import base64
-from io import BytesIO
-from PIL import Image
-import PIL
 
 
 @st.cache_data
@@ -93,8 +88,13 @@ def transform_data_to_push_in_db(infos_dict, infos_type, user_id):
     }
     new_info_dict["user_id"] = user_id
 
+    print(f" après trznsformation des colonnes :{new_info_dict}")
+
     if infos_type == "person_infos":
-        new_info_dict = new_info_dict.update({"date": datetime.datetime.today()})
+        new_info_dict.update(
+            {"user_id": user_id, "modification_date": datetime.datetime.today()}
+        )
+        print(f" après ajout de colonnes :{new_info_dict}")
 
     return new_info_dict
 
@@ -103,13 +103,11 @@ def send_to_db(connexion_infos, infos_type):
     if infos_type == "connexion_info":
         file = "sql/update_user_informations.sql"
     elif infos_type == "person_infos":
-        file = ""
+        file = "sql/create_new_row_in_users_informations.sql"
 
     with create_connection() as connexion:
         with connexion.cursor() as cursor:
             with open(file, "r") as f:
                 query = f.read()
-                print(f"Requête SQL : {query}")
-                print(f"Dictionnaire des paramètres : {connexion_infos}")
                 cursor.execute(query, connexion_infos)
                 connexion.commit()

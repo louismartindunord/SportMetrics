@@ -1,0 +1,2 @@
+INSERT INTO users_informations (user_id, poid, objectif, pourcentage_graisse, pourcentage_muscle, modification_date)
+VALUES (%(user_id)s, %(poid)s, %(objectif)s, %(pourcentage_graisse)s, %(pourcentage_muscle)s, %(modification_date)s);
